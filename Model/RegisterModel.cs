@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Model
 {
-    class RegisterModel
+    public class RegisterModel
     {
         public int UserId { get; set; }
         public string UserName { get; set; }
