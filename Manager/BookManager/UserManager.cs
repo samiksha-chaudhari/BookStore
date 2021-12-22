@@ -1,5 +1,6 @@
 ﻿using Manager.Interface;
 using Model;
+using Repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,9 +14,17 @@ namespace Manager.BookManager
         {
             this.repository = repository;
         }
-        public string register(RegisterModel userData)
+
+        public bool Register(RegisterModel userData)
         {
-            return "Register Successfull";
+            try
+            {
+                return this.repository.Register(userData);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

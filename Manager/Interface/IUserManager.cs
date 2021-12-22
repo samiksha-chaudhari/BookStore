@@ -4,6 +4,6 @@ namespace Manager.Interface
 {
     public interface IUserManager
     {
-        string register(RegisterModel userData);
+        bool Register(RegisterModel userData);
     }
 }
