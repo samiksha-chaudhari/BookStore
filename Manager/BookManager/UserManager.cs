@@ -26,5 +26,30 @@ namespace Manager.BookManager
                 throw new Exception(ex.Message);
             }
         }
+
+        public string Login(LoginModel login)
+        {
+            try
+            {
+                return this.repository.Login(login);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public string GenerateToken(string userName)
+        {
+            try
+            {
+                return this.repository.GenerateToken(userName);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }
