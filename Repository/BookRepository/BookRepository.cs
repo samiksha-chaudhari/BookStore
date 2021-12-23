@@ -134,5 +134,37 @@ namespace Repository.BookRepository
                 }
         }
 
+
+        public bool DeleteBook(int bookId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("BookStoreDB"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("spDeleteBook", sqlConnection);
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@BookId", bookId);
+                    sqlCommand.Parameters.Add("@book", SqlDbType.Int);
+                    sqlCommand.Parameters["@book"].Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+
+                    var result = sqlCommand.Parameters["@book"].Value;
+                    if (result.Equals(1))
+                        return true;
+                    else
+                        return false;
+
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
     }
 }

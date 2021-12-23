@@ -7,5 +7,6 @@ namespace Manager.Interface
         bool AddBook(BookModel bookmodel);
         BookModel GetBook(int bookId);
         bool UpdateBook(BookModel bookmodel);
+        bool DeleteBook(int bookId);
     }
 }
