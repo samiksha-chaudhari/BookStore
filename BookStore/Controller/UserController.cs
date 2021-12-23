@@ -1,4 +1,5 @@
 ﻿using Manager.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using StackExchange.Redis;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace BookStore.Controller
 {
+    [AllowAnonymous]
+    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserManager manager;
@@ -98,6 +101,30 @@ namespace BookStore.Controller
             {
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
+        }
+
+        [HttpPost]
+        [Route("api/resetpassword")]
+        public IActionResult ResetPassword([FromBody] ResetPasswordModel resetPassword)
+        {
+            var result = this.manager.ResetPassword(resetPassword);
+            try
+            {
+                if (result)
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Password Reset Successfully" });
+
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Password Reset Failed" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
+            }
+
         }
 
     }

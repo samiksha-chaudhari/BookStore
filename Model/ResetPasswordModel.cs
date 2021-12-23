@@ -11,6 +11,7 @@ namespace Model
         public int UserId { get; set; }
 
         [Required]
-        public string NewPassword { get; set; }
+        public string Password { get; set; }
+        public string token { get; set; }
     }
 }

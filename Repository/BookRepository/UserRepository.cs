@@ -222,18 +222,13 @@ namespace Repository.BookRepository
                     SqlCommand sqlCommand = new SqlCommand("spUserReset", sqlConnection);
                     sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                     sqlConnection.Open();
-                    var password = this.EncryptPassword(resetPassword.NewPassword);
+                    var password = this.EncryptPassword(resetPassword.Password);
                     sqlCommand.Parameters.AddWithValue("@UserId", resetPassword.UserId);
                     sqlCommand.Parameters.AddWithValue("@Password", password);
-                    sqlCommand.Parameters.Add("@user", SqlDbType.Int);
-                    sqlCommand.Parameters["@user"].Direction = ParameterDirection.Output;
+  
                     sqlCommand.ExecuteNonQuery();
 
-                    var result = sqlCommand.Parameters["@user"].Value;
-                    if (!(result is DBNull))
-                        return true;
-                    else
-                        return false;
+                    return true;
                 }
                 catch (Exception e)
                 {

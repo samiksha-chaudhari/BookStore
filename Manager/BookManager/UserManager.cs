@@ -62,5 +62,17 @@ namespace Manager.BookManager
                 throw new Exception(ex.Message);
             }
         }
+
+        public bool ResetPassword(ResetPasswordModel resetPassword)
+        {
+            try
+            {
+                return this.repository.ResetPassword(resetPassword);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
