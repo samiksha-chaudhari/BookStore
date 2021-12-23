@@ -7,5 +7,7 @@ namespace Repository.Interface
         bool Register(RegisterModel userData);
         string Login(LoginModel login);
         string GenerateToken(string userName);
+        string ForgotPassword(string Email);
+        bool ResetPassword(ResetPasswordModel resetPassword);
     }
 }

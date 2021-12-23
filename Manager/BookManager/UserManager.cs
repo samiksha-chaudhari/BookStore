@@ -51,5 +51,16 @@ namespace Manager.BookManager
             }
         }
 
+        public string ForgotPassword(string Email)
+        {
+            try
+            {
+                return this.repository.ForgotPassword(Email);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

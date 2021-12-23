@@ -77,5 +77,28 @@ namespace BookStore.Controller
             }
         }
 
+        [HttpPost]
+        [Route("api/forgetpassword")]
+        public IActionResult ForgotPassword(string Email)
+        {
+            try
+            {
+                string result = this.manager.ForgotPassword(Email);
+                if (result.Equals("Mail is send"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else
+                {
+
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+
     }
 }
