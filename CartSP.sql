@@ -37,3 +37,67 @@ BEGIN
 			SET @cart = NULL;
 	END
 END
+
+
+CREATE PROC spDeleteCart
+	@CartID INT,
+	@cart INT =NULL OUTPUT
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM [CART] WHERE CartID = @CartID)
+	BEGIN
+		DELETE FROM [CART] WHERE CartID = @CartID
+		SET @cart = 1;
+	END
+	ELSE
+	BEGIN
+		SET @cart = NULL;
+	END
+END
+
+
+
+CREATE PROC spUpdateCart
+	@CartID INT,
+	@Quantity INT,
+	@cart INT = NULL OUTPUT
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM [CART] WHERE CartID = @CartID)
+	BEGIN
+			SET @cart = 1;
+			UPDATE CART
+			SET
+				Quantity = @Quantity
+			WHERE
+				CartID = @CartID;
+		END
+		ELSE
+		BEGIN
+			SET @cart = NULL;
+		END
+END
+
+
+
+CREATE PROC spGetCart
+	@UserId INT
+AS
+BEGIN
+	SELECT
+		c.CartID,
+		c.BookId,
+		c.UserId,
+		b.BookName,
+		b.AuthorName,
+		b.BookDescription,
+		b.BookImage ,
+		b.Quantity,
+		b.Price,
+		b.DiscountPrice,
+		b.Rating,
+		b.RatingCount
+	FROM [CART] AS c
+	LEFT JOIN [Books] AS b ON c.BookId = B.BookId
+	WHERE C.UserId = @UserId
+END
