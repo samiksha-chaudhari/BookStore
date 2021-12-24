@@ -51,5 +51,17 @@ namespace Manager.BookManager
             }
         }
 
+        public List<CartModel> GetCart(int userId)
+        {
+            try
+            {
+                return this.repository.GetCart(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

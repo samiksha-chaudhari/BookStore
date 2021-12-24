@@ -116,5 +116,53 @@ namespace Repository.BookRepository
                 }
 
         }
+        public List<CartModel> GetCart(int userId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("BookStoreDB"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("spGetCart", sqlConnection);
+
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@UserId", userId);
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    List<CartModel> cartItems = new List<CartModel>();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            CartModel cart = new CartModel();
+                            BookModel book = new BookModel();
+                            cart.CartID = Convert.ToInt32(reader[0]);
+                            cart.BookId = Convert.ToInt32(reader[1]);
+                            cart.UserId = Convert.ToInt32(reader[2]);
+                            book.BookName = reader[3].ToString();
+                            book.AuthorName = reader[4].ToString();
+                            book.BookDescription = reader[5].ToString();
+                            book.BookImage = reader[6].ToString();
+                            book.Quantity = reader[7].ToString();
+                            book.Price = Convert.ToInt32(reader[8]);
+                            book.DiscountPrice = Convert.ToInt32(reader[9]);                            
+                            book.Rating = Convert.ToInt32(reader[10]);
+                            book.RatingCount = Convert.ToInt32(reader[11]);                            
+                            
+                            cartItems.Add(cart);
+                        }
+
+                    }
+                    return cartItems;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
     }
 }
