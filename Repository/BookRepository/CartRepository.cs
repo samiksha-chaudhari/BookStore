@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Model;
+using Repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,13 +27,79 @@ namespace Repository.BookRepository
                     SqlCommand sqlCommand = new SqlCommand("spAddCart", sqlConnection);
                     sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                     sqlConnection.Open();
-                    sqlCommand.Parameters.AddWithValue("@BookId", cartModel.BookID);
+                    sqlCommand.Parameters.AddWithValue("@BookId", cartModel.BookId);
                     sqlCommand.Parameters.AddWithValue("@UserId", cartModel.UserId);
-                    sqlCommand.Parameters.AddWithValue("@NoOfBook", cartModel.BookOrderCount);
-                    var returnedSQLParameter = sqlCommand.Parameters.Add("@result", SqlDbType.Int);
-                    returnedSQLParameter.Direction = ParameterDirection.Output;
+                   // sqlCommand.Parameters.AddWithValue("@Quantity", cartModel.Quantity);
+                    sqlCommand.Parameters.Add("@cart", SqlDbType.Int).Direction = ParameterDirection.Output;
                     sqlCommand.ExecuteNonQuery();
-                    var result = (int)returnedSQLParameter.Value;
+                    var result = sqlCommand.Parameters["@cart"].Value;
+
+                    if (result.Equals(2))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+
+        public bool UpdateCart(int cartId, int Quantity)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("BookStoreDB"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("spUpdateCart", sqlConnection);
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@CartId", cartId);
+                    sqlCommand.Parameters.AddWithValue("@Quantity", Quantity);
+                    sqlCommand.Parameters.Add("@cart", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+                    var result = sqlCommand.Parameters["@cart"].Value;
+                    if (result.Equals(1))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+
+        public bool DeleteCart(int cartId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("BookStoreDB"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("spDeleteCart", sqlConnection);
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@cartId", cartId);
+                    sqlCommand.Parameters.Add("@cart", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+                    var result = sqlCommand.Parameters["@cart"].Value;
                     if (result.Equals(1))
                     {
                         return true;
@@ -47,6 +114,7 @@ namespace Repository.BookRepository
                 {
                     throw new Exception(e.Message);
                 }
+
         }
     }
 }

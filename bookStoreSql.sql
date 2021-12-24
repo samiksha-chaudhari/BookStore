@@ -10,6 +10,9 @@ PhoneNo varchar(12) NOT NULL,
 Password varchar(50) NOT NULL
 )
 
+ALTER TABLE RegUser
+ADD PRIMARY KEY (UserId);
+
 Create procedure usp_AddUser
 (   
     @UserName VARCHAR(50),

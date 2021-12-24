@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Manager.Interface;
+using Model;
 using Repository.Interface;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,29 @@ namespace Manager.BookManager
             }
         }
 
+        public bool UpdateCart(int cartId, int Quantity)
+        {
+            try
+            {
+                return this.repository.UpdateCart(cartId, Quantity);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public bool DeleteCart(int cartId)
+        {
+            try
+            {
+                return this.repository.DeleteCart(cartId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }
