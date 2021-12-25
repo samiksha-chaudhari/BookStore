@@ -64,3 +64,13 @@ BEGIN
 		  end
 END 
 
+create PROCEDURE GetAddressDetails
+  @UserId int
+AS
+BEGIN
+
+     IF(EXISTS(SELECT * FROM Address WHERE UserId=@UserId))
+	 begin
+	   SELECT * FROM Address WHERE UserId=@UserId;
+   	 end
+End

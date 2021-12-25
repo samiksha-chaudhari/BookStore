@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Model;
+using System.Collections.Generic;
 
 namespace Repository.Interface
 {
@@ -7,5 +8,6 @@ namespace Repository.Interface
     {
         bool AddAddress(AddressModel addressDetails);
         bool EditAddress(AddressModel addressDetails);
+        List<AddressModel> GetUserAddress(int userId);
     }
 }

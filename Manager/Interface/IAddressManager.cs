@@ -1,4 +1,5 @@
 ﻿using Model;
+using System.Collections.Generic;
 
 namespace Manager.Interface
 {
@@ -6,5 +7,6 @@ namespace Manager.Interface
     {
         bool AddAddress(AddressModel addressDetails);
         bool EditAddress(AddressModel addressDetails);
+        List<AddressModel> GetUserAddress(int userId);
     }
 }

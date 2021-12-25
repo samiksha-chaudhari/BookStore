@@ -38,5 +38,18 @@ namespace Manager.BookManager
                 throw new Exception(ex.Message);
             }
         }
+
+        public List<AddressModel> GetUserAddress(int userId)
+        {
+            try
+            {
+                return this.repository.GetUserAddress(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

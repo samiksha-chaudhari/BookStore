@@ -60,5 +60,28 @@ namespace BookStore.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
         }
+
+        [HttpGet]
+        [Route("GetUserAddress")]
+        public IActionResult GetUserAddress(int userId)
+        {
+            var result = this.manager.GetUserAddress(userId);
+            try
+            {
+                if (result.Count > 0)
+                {
+                    return this.Ok(new { Status = true, Message = "Address successfully retrived", Data = result });
+
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "No address available" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
+            }
+        }
     }
 }
