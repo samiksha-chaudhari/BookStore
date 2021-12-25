@@ -18,7 +18,7 @@ namespace BookStore.Controller
 
         }
         [HttpPost]
-        [Route("AddUserAddress")]
+        [Route("api/AddUserAddress")]
         public IActionResult AddAddress([FromBody] AddressModel addressDetails)
         {
             try
@@ -36,6 +36,28 @@ namespace BookStore.Controller
             catch (Exception ex)
             {
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("api/EditAddress")]
+        public IActionResult EditAddress([FromBody] AddressModel addressDetails)
+        {
+            var result = this.manager.EditAddress(addressDetails);
+            try
+            {
+                if (result)
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = "Address updated successfully" });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to update address" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
         }
     }

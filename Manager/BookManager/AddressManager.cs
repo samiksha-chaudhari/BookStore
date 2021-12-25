@@ -26,5 +26,17 @@ namespace Manager.BookManager
                 throw new Exception(ex.Message);
             }
         }
+
+        public bool EditAddress(AddressModel addressDetails)
+        {
+            try
+            {
+                return this.repository.EditAddress(addressDetails);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
