@@ -100,20 +100,16 @@ namespace BookStore.Controller
                 var result = this.manager.DeleteBook(BookId);
                 if (result)
                 {
-
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = "Removed Book Successfully !" });
                 }
                 else
                 {
-
                     return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Failed to Remove Book, Try again" });
                 }
             }
             catch (Exception ex)
             {
-
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
-
             }
         }
     }

@@ -101,5 +101,36 @@ namespace Repository.BookRepository
                 }
         }
 
+        public bool DeleteWishlist(int WishlistId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("BookStoreDB"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("spDeleteWishlist", sqlConnection);
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@WishlistId", WishlistId);
+                    sqlCommand.Parameters.Add("@wishlist", SqlDbType.Int);
+                    sqlCommand.Parameters["@wishlist"].Direction = ParameterDirection.Output;
+                    sqlCommand.ExecuteNonQuery();
+
+                    var result = sqlCommand.Parameters["@wishlist"].Value;
+                    if (result.Equals(1))
+                        return true;
+                    else
+                        return false;
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+
     }
 }
