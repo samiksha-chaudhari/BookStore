@@ -52,5 +52,54 @@ namespace Repository.BookRepository
                 }
         }
 
+        public List<WishlistModel> GetWishList(int userId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("BookStoreDB"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("spGetWishlist", sqlConnection);
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@UserId", userId);
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        List<WishlistModel> wishList = new List<WishlistModel>();
+                        while (reader.Read())
+                        {
+                            BookModel booksModel = new BookModel();
+                            WishlistModel wishListModel = new WishlistModel();
+
+                            wishListModel.WishlistId = Convert.ToInt32(reader["WishlistId"]);
+                            wishListModel.UserId = Convert.ToInt32(reader["UserId"]);
+                            wishListModel.BookId = Convert.ToInt32(reader["BookId"]);
+                            booksModel.BookName = reader["BookName"].ToString();
+                            booksModel.AuthorName = reader["AuthorName"].ToString();
+                            booksModel.BookDescription = reader["BookDescription"].ToString();
+                            booksModel.BookImage = reader["BookImage"].ToString();
+                            booksModel.Quantity = reader["Quantity"].ToString();
+                            booksModel.Price = Convert.ToInt32(reader["Price"]);                            
+                            booksModel.DiscountPrice = Convert.ToInt32(reader["DiscountPrice"]);
+                            
+                            wishList.Add(wishListModel);
+                        }
+                        return wishList;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
+
     }
 }

@@ -18,7 +18,7 @@ namespace BookStore.Controller
 
         }
         [HttpPost]
-        [Route("AddToWishList")]
+        [Route("api/AddToWishList")]
         public IActionResult AddToWishList([FromBody] WishlistModel wishListmodel)
         {
             try
@@ -36,6 +36,28 @@ namespace BookStore.Controller
             catch (Exception ex)
             {
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("api/getwishlist")]
+        public IActionResult GetWishList(int userId)
+        {
+            var result = this.manager.GetWishList(userId);
+            try
+            {
+                if (result != null)
+                {
+                    return this.Ok(new { Status = true, Message = "Wish List successfully retrived", Data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "No WishList available" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
             }
         }
     }

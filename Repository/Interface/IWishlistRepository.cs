@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Model;
+using System.Collections.Generic;
 
 namespace Repository.Interface
 {
     public interface IWishlistRepository
     {
-        IConfiguration Configuration { get; }
-
         bool AddToWishList(WishlistModel wishListmodel);
+        List<WishlistModel> GetWishList(int userId);
     }
 }
