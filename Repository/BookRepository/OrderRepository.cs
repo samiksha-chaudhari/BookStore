@@ -31,9 +31,10 @@ namespace Repository.BookRepository
                         sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                         sqlConnection.Open();
                         sqlCommand.Parameters.AddWithValue("@BookId", order.BookId);
-                        sqlCommand.Parameters.AddWithValue("@CartId", order.CartID);
+                        //sqlCommand.Parameters.AddWithValue("@CartId", order.CartID);
                         sqlCommand.Parameters.AddWithValue("@UserId", order.UserId);
                         sqlCommand.Parameters.AddWithValue("@Quantity", order.Quantity);
+                        sqlCommand.Parameters.AddWithValue("@AddressId", order.AddressId);
 
                         sqlCommand.Parameters.Add("@order", SqlDbType.Int).Direction = ParameterDirection.Output;
                         sqlCommand.ExecuteNonQuery();
