@@ -62,6 +62,47 @@ namespace Repository.BookRepository
                 }
         }
 
+        public List<OrderModel> GetOrderList(int userId)
+        {
+            sqlConnection = new SqlConnection(this.Configuration.GetConnectionString("BookStoreDB"));
+            using (sqlConnection)
+                try
+                {
+                    SqlCommand sqlCommand = new SqlCommand("spGetOrder", sqlConnection);
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("@UserId", userId);
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        List<OrderModel> orderList = new List<OrderModel>();
+                        while (reader.Read())
+                        {
+                            OrderModel orderModel = new OrderModel();
+                            orderModel.OrderId = Convert.ToInt32(reader["OrderId"]);
+                            orderModel.UserId = Convert.ToInt32(reader["UserId"]);
+                            orderModel.AddressId = Convert.ToInt32(reader["AddressId"]);
+                            orderModel.BookId = Convert.ToInt32(reader["BookId"]);
+                            orderModel.Price = Convert.ToInt32(reader["Price"]);
+                            orderModel.Quantity = Convert.ToInt32(reader["Quantity"]);
+                            orderList.Add(orderModel);
+                        }
+                        return orderList;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+        }
 
     }
 }

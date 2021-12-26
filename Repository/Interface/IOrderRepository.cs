@@ -7,5 +7,6 @@ namespace Repository.Interface
     public interface IOrderRepository
     {
         bool AddOrder(List<CartModel> orderdetails);
+        List<OrderModel> GetOrderList(int userId);
     }
 }

@@ -39,6 +39,26 @@ namespace BookStore.Controller
             }
         }
 
-
+        [HttpGet]
+        [Route("api/getorder")]
+        public IActionResult GetOrderList(int userId)
+        {
+            var result = this.manager.GetOrderList(userId);
+            try
+            {
+                if (result.Count > 0)
+                {
+                    return this.Ok(new { Status = true, Message = "Wish List successfully retrived", Data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "No WishList available" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = e.Message });
+            }
+        }
     }
 }
